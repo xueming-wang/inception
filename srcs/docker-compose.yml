@@ -20,24 +20,22 @@ services:
     depends_on: 
       - php
 
-    # PHP Service
-    php:
-      image: php:7.4-fpm
-      working_dir: /var/www/php
-      volumes:
-        - ./src:/var/www/php
+  # wordpress  
+  wordpress:
 
-    # MySQL Service
-    mysql:
-      image: mysql:8
-      environment:
-        MYSQL_ROOT_PASSWORD: {rootpassword}
-        MYSQL_DATABASE: {db_name}
-        MYSQL_USER: {user}
-        MYSQL_PASSWORD: {userpassword}
-      volumes:
-        - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-        - mysqldata:/var/lib/mysql
+  
+
+  # MySQL Service
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: {rootpassword}
+      MYSQL_DATABASE: {db_name}
+      MYSQL_USER: {user}
+      MYSQL_PASSWORD: {userpassword}
+    volumes:
+      - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - mysqldata:/var/lib/mysql
     
   web:
   #指定为构建镜像上下文路径

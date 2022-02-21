@@ -1,5 +1,5 @@
  #MariaDB uniquement sans nginx.
- 
+
  #指定使用哪个镜像源   基于Linux下Debian系统 容器在这个系统内运行  Le container devra tourner avec Debian Buster.
 FROM debian:buster  
 # 复制当前所有文件包括文件夹到容器里的/tmp文件夹里
@@ -7,7 +7,7 @@ COPY . /tmp
 # 指定接下里的工作路径为/tmp
 WORKDIR /tmp
 
-# 安装wget mariadb nginx php  #mettre en place un serveur web avec Nginx使用nginx设置服务器
+# 安装wgetnginx ph mariadb p  #mettre en place un serveur web avec Nginx使用nginx设置服务器
 RUN apt-get update \
     && apt-get -y install openssl \
     && apt-get -y install wget \
