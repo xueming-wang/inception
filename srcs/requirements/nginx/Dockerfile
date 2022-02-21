@@ -1,0 +1,1 @@
+#NGINX avec TLSv1.2 ou TLSv1.3 uniquement.
