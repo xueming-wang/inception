@@ -16,7 +16,7 @@ services:
     volumes:
       - ./src:/var/www/php:ro
       - ./.docker/nginx/conf.d:/etc/nginx/conf.d:ro
-    # #设置依赖关系。 depends_on  就會在 Nginx 容器啟動之前先啟動 php-fpm 容器。
+    #设置依赖关系。 depends_on  就會在 Nginx 容器啟動之前先啟動 php-fpm 容器。
     depends_on: 
       - php
 
