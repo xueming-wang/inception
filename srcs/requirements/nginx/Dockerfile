@@ -9,8 +9,6 @@ WORKDIR /conf
 # 复制当前所有文件包括文件夹到容器里的/tmp文件夹里
 COPY ./conf .
 
-
-
 # 安装wgetnginx ph mariadb p  #mettre en place un serveur web avec Nginx使用nginx设置服务器
 #openssl：Open Secure Sockets Layer
 #wget 是一个从网络上自动下载文件的自由工具
@@ -19,15 +17,20 @@ RUN apt-get update \
     && apt-get -y install wget \      
     && apt-get -y install nginx
 
+
 # 配置nginx
-# RUN rm -rf /etc/nginx/sites-enabled/default \
-#     && cp /tmp/srcs/mynginxconf /etc/nginx/sites-available \
-#     && ln -s /etc/nginx/sites-available/mynginxconf /etc/nginx/sites-enabled/
+RUN rm -rf /etc/nginx/sites-enabled/default \
+    && cp conf/nginx.conf /etc/nginx/sites-available \
+    && ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/
+    #ln -s为某一个文件在另外一个位置建立一个同步的链接
+
+# 创建SSL
+RUN mkdir /etc/nginx/ssl
 
 #运行容器时执行的shell环境
 #CMD
 
 #指定容器挂载点到宿主机自动生成的目录或其他容器
 #VOLUME 
-EXPOSE 80
+EXPOSE 443
 
