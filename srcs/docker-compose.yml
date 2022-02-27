@@ -7,95 +7,114 @@ version: '3.7'  #Compose File 的版本
 services:  
   # Nginx Service
   nginx:
-    image: nginx:1.17
+    build: ./nginx
+    image: nginx
+    container_name: nginx_xuwang
     ports:
-      - 80:80
-
+      - 443:443
     #./src 就是在 docker-compose.yml 所在資料夾裡的 src/ 資料夾，它會同時被掛載到兩個 docker 容器的 /var/www/php 這個資料夾裡；
     #而 ./.docker/nginx/conf.d 則會被掛載到 nginx 容器的 /etc/nginx/conf.d 資料夾。 在每個載掛設定後面加上的 :ro 是 read only 的意思。
     volumes:
-      - ./src:/var/www/php:ro
-      - ./.docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - wordpress:/var/www/wordpress
     #设置依赖关系。 depends_on  就會在 Nginx 容器啟動之前先啟動 php-fpm 容器。
     depends_on: 
-      - php
+      - wordpress
+    restart: always
 
   # wordpress  
   wordpress:
-
-  
-
-  # MySQL Service
-  mysql:
-    image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: {rootpassword}
-      MYSQL_DATABASE: {db_name}
-      MYSQL_USER: {user}
-      MYSQL_PASSWORD: {userpassword}
+    build: ./wordpress
+    image: wordpress
+    container_name: wordpress_xuwang
+    ports:
+      -3306:3306
     volumes:
-      - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-      - mysqldata:/var/lib/mysql
-    
-  web:
-  #指定为构建镜像上下文路径
-    build: .
-    #作为具有在上下文指定的路径的对象，以及可选的 Dockerfile 和 args：
-    context: ./dir  #上下文路径。
-    dockerfile: Dockerfile-alternate  #指定构建镜像的 Dockerfile 文件名。
-    args:   #添加构建参数，这是只能在构建过程中访问的环境变量。
-      buildno: 1
-    labels:  #设置构建镜像的标签。
-      - "com.example.description=Accounting we bapp"
-    target: prod   #多层构建，可以指定构建哪一层。
-
-    #添加或删除容器拥有的宿主机的内核功能。
-    cap_add:
-    - ALL # 开启全部权限
-    cap_drop:
-    - SYS_PTRACE # 关闭 ptrace权限
-
-    #为容器指定父 cgroup 组，意味着将继承该组的资源限制。
-    cgroup_parent: m-executor-abcd
-
-    #command 覆盖容器启动的默认命令。
-    command: ["bundle", "exec", "thin", "-p", "3000"]
-
-    #指定自定义容器名称，而不是生成的默认名称。
-    container_name: my-web-container
-
-    #设置依赖关系。 depends_on
+      - wordpress:/var/www/wordpress
     depends_on:
-      - db
-      - redis
-    redis:
-      image: redis
-      deploy: #deploy 指定与服务的部署和运行有关的配置。
-        mode：replicated
-          #replicas: 6
-        #endpoint_mode: dnsrr #访问集群服务的方式。 # Docker 集群服务一个对外的虚拟 ip。所有的请求都会通过这个虚拟 ip 到达集群服务内部的机器。 DNS 轮询（DNSRR）。所有的请求会自动轮询获取到集群 ip 列表中的一个 ip 地址。
-      labels: 
-        description: "This redis service label"
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 50M
-        reservations:
-          cpus: '0.25'
-          memory: 20M
-        restart_policy:
-          condition: on-failure
-          delay: 5s
-          max_attempts: 3
-          window: 120s
-    db:
-      image: postgres
-      volumes: #将主机的数据卷或着文件挂载到容器里。
-        - "/localhost/postgres.sock:/var/run/postgres/postgres.sock" 
-    #指定与服务的部署和运行有关的配置。只在 swarm 模式下才会有用。
+      - mariadb
+    restart: always
+    
+  
+  # mariadb
+  mariadb:
+    build: ./mariadb
+    image: mariadb
+    ports:
+      -9000:9000
+    volumes:
+      - mariadb:/var/lib/mysql
+    restart: always
 
-volumes: 
-  logvolume01: {}
+  # # MySQL Service
+  # mysql:
+  #   image: mysql:8
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: {rootpassword}
+  #     MYSQL_DATABASE: {db_name}
+  #     MYSQL_USER: {user}
+  #     MYSQL_PASSWORD: {userpassword}
+  #   volumes:
+  #     - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+  #     - mysqldata:/var/lib/mysql
+    
+  # web:
+  # #指定为构建镜像上下文路径
+  #   build: .
+  #   #作为具有在上下文指定的路径的对象，以及可选的 Dockerfile 和 args：
+  #   context: ./dir  #上下文路径。
+  #   dockerfile: Dockerfile-alternate  #指定构建镜像的 Dockerfile 文件名。
+  #   args:   #添加构建参数，这是只能在构建过程中访问的环境变量。
+  #     buildno: 1
+  #   labels:  #设置构建镜像的标签。
+  #     - "com.example.description=Accounting we bapp"
+  #   target: prod   #多层构建，可以指定构建哪一层。
+
+  #   #添加或删除容器拥有的宿主机的内核功能。
+  #   cap_add:
+    # - ALL # 开启全部权限
+    # cap_drop:
+    # - SYS_PTRACE # 关闭 ptrace权限
+
+    # #为容器指定父 cgroup 组，意味着将继承该组的资源限制。
+    # cgroup_parent: m-executor-abcd
+
+    # #command 覆盖容器启动的默认命令。
+    # command: ["bundle", "exec", "thin", "-p", "3000"]
+
+    # #指定自定义容器名称，而不是生成的默认名称。
+    # container_name: my-web-container
+
+    # #设置依赖关系。 depends_on
+    # depends_on:
+    #   - db
+    #   - redis
+    # redis:
+    #   image: redis
+    #   deploy: #deploy 指定与服务的部署和运行有关的配置。
+    #     mode：replicated
+    #       #replicas: 6
+    #     #endpoint_mode: dnsrr #访问集群服务的方式。 # Docker 集群服务一个对外的虚拟 ip。所有的请求都会通过这个虚拟 ip 到达集群服务内部的机器。 DNS 轮询（DNSRR）。所有的请求会自动轮询获取到集群 ip 列表中的一个 ip 地址。
+    #   labels: 
+    #     description: "This redis service label"
+    #   resources:
+    #     limits:
+    #       cpus: '0.50'
+    #       memory: 50M
+    #     reservations:
+    #       cpus: '0.25'
+    #       memory: 20M
+    #     restart_policy:
+    #       condition: on-failure
+    #       delay: 5s
+    #       max_attempts: 3
+    #       window: 120s
+    # db:
+    #   image: postgres
+    #   volumes: #将主机的数据卷或着文件挂载到容器里。
+    #     - "/localhost/postgres.sock:/var/run/postgres/postgres.sock" 
+    # #指定与服务的部署和运行有关的配置。只在 swarm 模式下才会有用。
+
+
 
 #该 Compose 文件定义了两个服务：web 和 redis。
 #web：该 web 服务使用从 Dockerfile 当前目录中构建的镜像。然后，它将容器和主机绑定到暴露的端口 5000。此示例服务使用 Flask Web 服务器的默认端口 5000 。

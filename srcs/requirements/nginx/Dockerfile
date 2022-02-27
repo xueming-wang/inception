@@ -12,15 +12,16 @@ COPY ./conf .
 # 安装wgetnginx ph mariadb p  #mettre en place un serveur web avec Nginx使用nginx设置服务器
 #openssl：Open Secure Sockets Layer
 #wget 是一个从网络上自动下载文件的自由工具
+#openssl TLSv1.2
 RUN apt-get update \
-    && apt-get -y install openssl \    
+    && apt-get -y install openssl \      
     && apt-get -y install wget \      
     && apt-get -y install nginx
 
 
 # 配置nginx
 RUN rm -rf /etc/nginx/sites-enabled/default \
-    && cp conf/nginx.conf /etc/nginx/sites-available \
+    && cp /conf/nginx.conf /etc/nginx/sites-available \
     && ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/
     #ln -s为某一个文件在另外一个位置建立一个同步的链接
 
