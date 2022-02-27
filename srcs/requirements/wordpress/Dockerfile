@@ -6,16 +6,24 @@ COPY ./conf .
 WORKDIR /conf
 
 # install wordpress
-RUN apt-get update \
-    && apt-get install -y php-fpm php-mysql
-    # && apt-get -y install php7.3-cli php7.3-fpm php7.3-mysql php7.3-json php7.3-opcache \
-    # && php7.3-mbstring php7.3-xml php7.3-gd php7.3-curl
+# 下载配置wordpress
+# RUN apt-get update \
+#     && apt-get -y install wget \
+#     && wget http://wordpress.org/latest.tar.gz \
+#     && tar -xzvf latest.tar.gz \    
+#     && mkdir /var/www/xuwang/wordpress \
+#     && mv wordpress /var/www/xuwang/wordpress \
+#     && mv /tmp/srcs/wp-config.php /var/www/site/wordpress \
+#     && chown -R www-data: /var/www/site/wordpress
 
-RUN mkdir -p /run/php
-
-#PHP CONF
-RUN mv conf/wp-config.php  
+# 下载配置phpmadmin
+# RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.1.0/phpMyAdmin-5.1.0-all-languages.tar.gz \
+#     && tar -xvzf phpMyAdmin-5.1.0-all-languages.tar.gz \
+#     && mv phpMyAdmin-5.1.0-all-languages /var/www/site/phpmyadmin \
+#     && mv /tmp/srcs/config.inc.php /var/www/site/phpmyadmin \
+#     && chown -R www-data: /var/www/site/phpmyadmin
+    
 
 EXPOSE 9000 
 
-CMD [ "" ]
+#CMD [ "" ]
