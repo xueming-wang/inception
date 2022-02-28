@@ -13,26 +13,44 @@ COPY ./conf/* .
 #openssl：Open Secure Sockets Layer
 #wget 是一个从网络上自动下载文件的自由工具
 #openssl TLSv1.2
-
+# Create website folder 
+RUN mkdir -p /var/www/html
 
 RUN apt-get update \
     && apt-get -y install openssl \      
     && apt-get -y install wget \      
     && apt-get -y install nginx
 
+# Get SSL certification
+#RUN mkdir /etc/nginx/ssl
+ARG DOMAIN_NAME
+
+RUN openssl req \
+        -x509 \
+        -newkey rsa:4096 \
+        -sha256 \
+        -nodes \
+        -keyout /etc/nginx/ssl/key.pem \
+        -out /etc/nginx/ssl/cert.pem \
+        -days 3650 \
+        -subj "/CN=FR/ST=Paris/L=Paris/O=42/OU=42/CN=xuwang" -keyout /etc/ssl/certs/${DOMAIN_NAME}.key -out /etc/ssl/certs/${DOMAIN_NAME}.crt
 
 
 # 配置nginx
 RUN rm -rf /etc/nginx/sites-enabled/default \
     && cp ./nginx.conf /etc/nginx/sites-available \
-    && ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/
+    && ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/ \
+    && chown -R www-data /var/www/* \
+    && chmod -R 755 /var/www/*
     #ln -s为某一个文件在另外一个位置建立一个同步的链接
 
 #RUN service nginx start
 #运行容器时执行的shell环境
-# CMD nginx
+# Start Nginx in foreground
+CMD ["nginx", "-g", "daemon off;"]
 
 #指定容器挂载点到宿主机自动生成的目录或其他容器
 #VOLUME 
+# Open https port
 EXPOSE 443
 
