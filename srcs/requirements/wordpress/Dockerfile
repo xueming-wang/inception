@@ -1,4 +1,5 @@
 #Un container Docker contenant WordPress + php-fpm (installé et configuré) uni- quement sans nginx.
+#两位用户将出现在您的 WordPress 数据库中
 FROM debian:buster
 
 WORKDIR /APP

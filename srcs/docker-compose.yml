@@ -1,4 +1,4 @@
-# yaml 配置实例
+# Defining and running multi-container Docker applications
 #指定本 yml 依从的 compose 哪个版本制定的。
 version: '3'  #Compose File 的版本
 
