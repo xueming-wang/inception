@@ -3,7 +3,7 @@
 FROM debian:buster
 
 # 指定接下里的工作路径为/tmp
-WORKDIR /conf
+WORKDIR /APP
 
 # 复制当前所有文件包括文件夹到容器里的/tmp文件夹里
 COPY ./conf .
@@ -12,7 +12,11 @@ RUN apt-get update \
     && apt-get -y install mariadb-client mariadb-server 
 
 # 配置数据管理系统
-RUN service mysql start
+RUN service mariadb start \
+    && echo "create database wordpress;" | mysql -u root  \
+    && echo "create user 'wordpress'@'%';" | mysql -u root \
+    && echo "grant all privileges on wordpress.* to 'wordpress'@'%' with grant option;" | mysql -u root \
+    && echo "flush privileges;" | mysql -u root
  
 #声明端口。帮助镜像使用者理解这个镜像服务的守护端口，以方便配置映射。
 EXPOSE 3306
