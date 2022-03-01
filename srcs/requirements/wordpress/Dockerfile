@@ -6,7 +6,6 @@ WORKDIR /APP
 
 COPY ./conf/* .
 
-RUN 
 # install wordpress
 # 下载配置wordpress
 RUN apt-get update \
@@ -14,10 +13,9 @@ RUN apt-get update \
     && wget http://wordpress.org/latest.tar.gz \
     && tar -xzvf latest.tar.gz \
     && mkdir /var/www/ \
-    && mkdir /var/www/web/ \
-    && mv wordpress /var/www/web/ \
-    && cp ./wp-config.php  /var/www/web/wordpress/ \
-    && chown -R www-data: /var/www/web/wordpress/
+    && mv wordpress /var/www/ \
+    && cp ./wp-config.php  /var/www/wordpress/ \
+    && chown -R www-data: /var/www/wordpress/
 
 # #下载配置phpmadmin
 # RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.1.0/phpMyAdmin-5.1.0-all-languages.tar.gz \

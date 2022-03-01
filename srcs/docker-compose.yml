@@ -1,52 +1,65 @@
 # Defining and running multi-container Docker applications
 #指定本 yml 依从的 compose 哪个版本制定的。
-version: '3'  #Compose File 的版本
+version: '3.8'  #Compose File 的版本
 
 #services 區塊就是我們想要建立、啟動的服務
 services:  
   # Nginx Service
   nginx:
-    build: ./nginx
+    build: ./requirements/nginx
     image: nginx
-    container_name: nginx_xuwang
+    container_name: nginx
     ports:
       - 443:443
-    #./src 就是在 docker-compose.yml 所在資料夾裡的 src/ 資料夾，它會同時被掛載到兩個 docker 容器的 /var/www/php 這個資料夾裡；
-    #而 ./.docker/nginx/conf.d 則會被掛載到 nginx 容器的 /etc/nginx/conf.d 資料夾。 在每個載掛設定後面加上的 :ro 是 read only 的意思。
     volumes:
-      - wordpress:/var/www/wordpress
+      - wordpress-v:/var/www/wordpress
     #设置依赖关系。 depends_on  就會在 Nginx 容器啟動之前先啟動 php-fpm 容器。
     depends_on: 
       - wordpress
     restart: always
+    networks:
+      - inception
 
   # wordpress  
   wordpress:
-    build: ./wordpress
+    build: ./requirements/wordpress
     image: wordpress
-    container_name: wordpress_xuwang
-    ports:
-      -3306:3306
+    container_name: wordpress
     volumes:
-      - wordpress:/var/www/wordpress
+      - wordpress-v:/var/www/wordpress
     depends_on:
       - mariadb
     restart: always
+    networks:
+      - inception
     
   
   # mariadb
   mariadb:
-    build: ./mariadb
+    build: ./requirements/mariadb
     image: mariadb
     container_name: mariadb
-    ports:
-      -9000:9000
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
     volumes:
-      - mariadb:/var/lib/mysql
+      - mariadb-v:/var/lib/mysql
     restart: always
+    networks:
+      - inception
 
   # networks
-  networks:
+networks:
+  inception:
+    driver: bridge
+
+volumes:
+  mariadb-v:
+    driver: local
+  wordpress-v:
+    driver: local
   # # MySQL Service
   # mysql:
   #   image: mysql:8

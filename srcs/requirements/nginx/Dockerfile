@@ -15,7 +15,7 @@ COPY ./conf/* .
 #openssl TLSv1.2
 
 # Create website folder 
-RUN mkdir -p /var/www/web
+RUN mkdir -p /var/www/wordpress
 
 RUN apt-get update \
     && apt-get -y install openssl \      

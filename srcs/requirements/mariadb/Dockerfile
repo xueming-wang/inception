@@ -9,18 +9,16 @@ WORKDIR /conf
 COPY ./conf .
 
 RUN apt-get update \
-    && apt-get -y install mariadb-client mariadb-server \
+    && apt-get -y install mariadb-client mariadb-server 
 
 # 配置数据管理系统
-RUN service mysql start \
+RUN service mysql start
  
 #声明端口。帮助镜像使用者理解这个镜像服务的守护端口，以方便配置映射。
 EXPOSE 3306
 
-#用于指定执行后续命令的用户和用户组
-USER <用户名>[:<用户组>]
 
-CMD <命令>：设置检查容器健康状况的命令
+
 
 
 
