@@ -32,10 +32,10 @@ RUN openssl req \
         -newkey rsa:4096 \
         -sha256 \
         -nodes \
-        -keyout /etc/nginx/ssl/key.pem \
-        -out /etc/nginx/ssl/cert.pem \
+        -keyout /etc/nginx/ssl/xuwang.key \
+        -out /etc/nginx/ssl/xuwang.crt \
         -days 3650 \
-        -subj "/CN=FR/ST=Paris/L=Paris/O=42/OU=42/CN=xuwang" -keyout /etc/ssl/certs/${DOMAIN_NAME}.key -out /etc/ssl/certs/${DOMAIN_NAME}.crt
+        -subj "/CN=FR/ST=Paris/L=Paris/O=42/OU=42/CN=xuwang"
 
 
 # 配置nginx

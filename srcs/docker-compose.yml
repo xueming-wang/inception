@@ -39,11 +39,14 @@ services:
     build: ./requirements/mariadb
     image: mariadb
     container_name: mariadb
+    env_file:
+      - ./.env
     environment:
-      MYSQL_ROOT_PASSWORD: wordpress
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
+      - DB_ROOT_PASSWORD=${MAIRIADB_ROOT_PASSWORD}
+      - DB_DATABASE=${MAIRIADB_DATABASE}
+      - DB_USER=${MAIRIADB_USER}
+      - DB_PASSWORD=${MAIRIADB_PASSWORD}
+
     volumes:
       - mariadb-v:/var/lib/mysql
     restart: always
