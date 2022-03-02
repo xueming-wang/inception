@@ -23,13 +23,13 @@
 define( 'DB_NAME', 'wordpress' );
 
 /** MySQL数据库用户名 */
-define( 'DB_USER', 'wordpress' );
+define( 'DB_USER', 'xuwang' );
 
 /** MySQL数据库密码 */
-define( 'DB_PASSWORD', '' );
+define( 'DB_PASSWORD', 'mypassword' );
 
 /** MySQL主机 */
-define( 'DB_HOST', 'localhost' );
+define( 'DB_HOST', 'mariadb' );
 
 /** 创建数据表时默认的文字编码 */
 define( 'DB_CHARSET', 'utf8' );

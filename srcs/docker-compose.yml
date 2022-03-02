@@ -1,5 +1,8 @@
 # Defining and running multi-container Docker applications
 #指定本 yml 依从的 compose 哪个版本制定的。
+#Compose会为我们的应用创建一个网络，服务的每个容器都会加入该网络中
+#容器就可被该网络中的其他容器访问，不仅如此，该容器还能以服务名称作为hostname被其他容器访问。
+#创建一个名为myapp_default的网络；它以“web”这个名称加入网络myapp_default；
 version: '3.8'  #Compose File 的版本
 
 #services 區塊就是我們想要建立、啟動的服務
@@ -9,15 +12,16 @@ services:
     build: ./requirements/nginx
     image: nginx
     container_name: nginx
+    command: nginx -g "daemon off;"
     ports:
-      - 443:443
+      - 443:443  #后面是网络 前面是本地
     volumes:
-      - wordpress-v:/var/www/wordpress
-    #设置依赖关系。 depends_on  就會在 Nginx 容器啟動之前先啟動 php-fpm 容器。
+      - wordpress-v:/var/www/website
+    # 定义容器启动顺序
     depends_on: 
       - wordpress
-    restart: always
-    networks:
+    # restart: always
+    networks:  # 调用下面 networks 定义的 app_net 网络
       - inception
 
   # wordpress  
@@ -26,43 +30,54 @@ services:
     image: wordpress
     container_name: wordpress
     volumes:
-      - wordpress-v:/var/www/wordpress
+      - wordpress-v:/var/www/website
+    command: sleep infinity
     depends_on:
       - mariadb
-    restart: always
+    # restart: always
+    ports:
+      - "9000:9000"
     networks:
       - inception
     
   
-  # mariadb
+  # mariadb  
   mariadb:
     build: ./requirements/mariadb
     image: mariadb
     container_name: mariadb
-    env_file:
-      - ./.env
+    #从指定文件中读取变量设置为容器中的环境变量  environment 的值可以覆盖 env_file 的值 
+    # env_file:  
+    #   - ./.env
+      #只要这些变量 优先
     environment:
-      - DB_ROOT_PASSWORD=${MAIRIADB_ROOT_PASSWORD}
-      - DB_DATABASE=${MAIRIADB_DATABASE}
-      - DB_USER=${MAIRIADB_USER}
-      - DB_PASSWORD=${MAIRIADB_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+
+    command: sleep infinity
 
     volumes:
       - mariadb-v:/var/lib/mysql
-    restart: always
+    # restart: always
+    ports:
+      - "3306:3306"
     networks:
       - inception
 
-  # networks
+# networks # 将容器加入指定网络 (等同于 docker network connect 的作用) networks将服务连接到不是由Compose管理的、外部创建的网络。
 networks:
-  inception:
-    driver: bridge
+  inception: #立自定义的网络
+    driver: bridge    # Docker 默认使用 bridge 连接单个主机上的网络
 
 volumes:
   mariadb-v:
-    driver: local
   wordpress-v:
-    driver: local
+
+  #  external:  已经存在的网络
+  #     name: my-pre-existing-network
+
   # # MySQL Service
   # mysql:
   #   image: mysql:8

@@ -15,7 +15,7 @@ COPY ./conf/* .
 #openssl TLSv1.2
 
 # Create website folder 
-RUN mkdir -p /var/www/wordpress
+RUN mkdir -p /var/www/website
 
 RUN apt-get update \
     && apt-get -y install openssl \      
@@ -41,12 +41,13 @@ RUN openssl req \
 # 配置nginx
 RUN rm -rf /etc/nginx/sites-enabled/default \
     && cp ./nginx.conf /etc/nginx/sites-available \
-    && ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/ \
-    && chown -R www-data /var/www/* \
-    && chmod -R 755 /var/www/*
+    && ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/
+    # && chown -R www-data /var/www/* \
+    # && chmod -R 755 /var/www/*
     #ln -s为某一个文件在另外一个位置建立一个同步的链接
 
 
+EXPOSE 443
 #容器启动时要执行的命令
 # Start Nginx in foreground  执行 nginx 可执行文件，并且要求以前台形式运行
 CMD ["nginx", "-g", "daemon off;"]
@@ -54,5 +55,5 @@ CMD ["nginx", "-g", "daemon off;"]
 #指定容器挂载点到宿主机自动生成的目录或其他容器
 #VOLUME 
 # Open https port
-EXPOSE 443
+
 
