@@ -30,14 +30,15 @@ RUN apt-get update \
 # 创建SSL
 RUN mkdir /etc/nginx/ssl \
  && openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout /etc/nginx/ssl/xuwang.pem \
-    -out /etc/nginx/ssl/xuwang.pem -subj "/C=FR/ST=PARIS/L=paris/O=42/OU=42/CN=xue/emailAddress=wxueming0614@hotmail.com" 
+    -out /etc/nginx/ssl/xuwang.pem -subj '/C=FR/ST=69/P=Paris/O=42/CN=tdayde'
 
 # 配置nginx
 RUN rm -rf /etc/nginx/sites-enabled/default \
+    rm -f /etc/nginx/sites-available/default \
     && cp ./nginx.conf /etc/nginx/sites-available \
-    && ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/ 
-    # && chown -R www-data /var/www/* \
-    # && chmod -R 755 /var/www/*
+    && ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/ \
+    && chown -R www-data /var/www/* \
+    && chmod -R 755 /var/www/*
     #ln -s为某一个文件在另外一个位置建立一个同步的链接
 
 
@@ -45,9 +46,9 @@ RUN rm -rf /etc/nginx/sites-enabled/default \
 EXPOSE 443
 #容器启动时要执行的命令
 # Start Nginx in foreground  执行 nginx 可执行文件，并且要求以前台形式运行
-# CMD ["nginx", "-g", "daemon off;"]
-ENTRYPOINT  service nginx restart &&\
- 			bash
+ CMD ["nginx", "-g", "daemon off;"]
+# ENTRYPOINT  service nginx restart &&\
+#  			bash
 #指定容器挂载点到宿主机自动生成的目录或其他容器
 #VOLUME 
 # Open https port
