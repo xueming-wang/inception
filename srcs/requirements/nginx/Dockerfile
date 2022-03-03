@@ -23,37 +23,35 @@ RUN apt-get update \
     && apt-get -y install nginx
 
 # Get SSL certification
-RUN mkdir /etc/nginx/ssl
+# RUN mkdir /etc/nginx/ssl
 
-ARG DOMAIN_NAME
+# ARG DOMAIN_NAME
 
-RUN openssl req \
-        -x509 \
-        -newkey rsa:4096 \
-        -sha256 \
-        -nodes \
-        -keyout /etc/nginx/ssl/xuwang.key \
-        -out /etc/nginx/ssl/xuwang.crt \
-        -days 3650 \
-        -subj "/CN=FR/ST=Paris/L=Paris/O=42/OU=42/CN=xuwang"
-
+# 创建SSL
+RUN mkdir /etc/nginx/ssl \
+ && openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout /etc/nginx/ssl/xuwang.pem \
+    -out /etc/nginx/ssl/xuwang.pem -subj "/C=FR/ST=PARIS/L=paris/O=42/OU=42/CN=xue/emailAddress=wxueming0614@hotmail.com" 
 
 # 配置nginx
 RUN rm -rf /etc/nginx/sites-enabled/default \
     && cp ./nginx.conf /etc/nginx/sites-available \
-    && ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/
+    && ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/ 
     # && chown -R www-data /var/www/* \
     # && chmod -R 755 /var/www/*
     #ln -s为某一个文件在另外一个位置建立一个同步的链接
 
 
+
 EXPOSE 443
 #容器启动时要执行的命令
 # Start Nginx in foreground  执行 nginx 可执行文件，并且要求以前台形式运行
-CMD ["nginx", "-g", "daemon off;"]
-
+# CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT  service nginx restart &&\
+ 			bash
 #指定容器挂载点到宿主机自动生成的目录或其他容器
 #VOLUME 
 # Open https port
+
+# CMD ["sh", "script.sh"]
 
 

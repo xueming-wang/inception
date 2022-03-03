@@ -6,10 +6,13 @@
 #    By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 15:15:41 by xuwang            #+#    #+#              #
-#    Updated: 2022/02/21 17:11:25 by xuwang           ###   ########.fr        #
+#    Updated: 2022/03/02 19:25:03 by xuwang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+NAME=inception
+
+all = $(NAME)
 #镜像（Image）：Docker 镜像（Image），就相当于是一个 root 文件系统
 	#Dockerfile是一个用来构建镜像的文本文件 读取Dockerfile中的指令自动生成映像。
 #容器（Container）：镜像（Image）和容器（Container）的关系，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。 容器通过镜像来创建

@@ -61,8 +61,10 @@ services:
     volumes:
       - mariadb-v:/var/lib/mysql
     # restart: always
-    ports:
-      - "3306:3306"
+    expose:  
+          - "3306"  
+    # ports:
+    #   - "3306:3306"
     networks:
       - inception
 
