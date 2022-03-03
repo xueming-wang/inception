@@ -47,6 +47,5 @@ RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.1.0/phpMyAdmin-5.1.0-all-lang
 EXPOSE 9000 
 
 #启动时运行
-#ENTRYPOINT service php7.3-fpm restart 
+CMD service php7.3-fpm restart 
 
-#CMD [ "" ]
