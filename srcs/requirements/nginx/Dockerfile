@@ -46,13 +46,12 @@ RUN rm -rf /etc/nginx/sites-enabled/default \
 EXPOSE 443
 #容器启动时要执行的命令
 # Start Nginx in foreground  执行 nginx 可执行文件，并且要求以前台形式运行
- CMD ["nginx", "-g", "daemon off;"]
+# CMD ["nginx", "-g", "daemon off;"]
 # ENTRYPOINT  service nginx restart &&\
 #  			bash
 #指定容器挂载点到宿主机自动生成的目录或其他容器
 #VOLUME 
 # Open https port
-
-# CMD ["sh", "script.sh"]
+CMD sh ./init.sh
 
 
