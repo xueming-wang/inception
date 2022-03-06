@@ -7,6 +7,26 @@ version: '3.8'  #Compose File 的版本
 
 #services 區塊就是我們想要建立、啟動的服務
 services:  
+   # mariadb  
+  mariadb:
+    build: ./requirements/mariadb
+    image: mariadb
+    container_name: mariadb
+    env_file:  
+      - ./.env
+      #只要这些变量 优先
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+    command: sleep infinity
+    volumes:
+      - mariadb-v:/var/lib/mysql
+    restart: always
+    networks:
+      - inception
+
   # Nginx Service
   nginx:
     build: ./requirements/nginx
@@ -20,7 +40,7 @@ services:
     # 定义容器启动顺序
     depends_on: 
       - wordpress
-    # restart: always
+    restart: always
     networks:  # 调用下面 networks 定义的 app_net 网络
       - inception
 
@@ -29,45 +49,23 @@ services:
     build: ./requirements/wordpress
     image: wordpress
     container_name: wordpress
+    environment:
+      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
+      - WORDPRESS_HOST_PSW=${WORDPRESS_HOST_PSW}
+      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
+      - WORDPRESS_DB_ASSWORD=${WORDPRESS_DB_ASSWORD}
+    command: sleep infinity
     volumes:
       - wordpress-v:/var/www/website
-    command: sleep infinity
+    # command: sleep infinity
     depends_on:
       - mariadb
-    # restart: always
+    restart: always
     ports:
       - "9000:9000"
     networks:
       - inception
-    
   
-  # mariadb  
-  mariadb:
-    build: ./requirements/mariadb
-    image: mariadb
-    container_name: mariadb
-    #从指定文件中读取变量设置为容器中的环境变量  environment 的值可以覆盖 env_file 的值 
-    # env_file:  
-    #   - ./.env
-      #只要这些变量 优先
-    environment:
-      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-      - MARIADB_DATABASE=${MARIADB_DATABASE}
-      - MARIADB_USER=${MARIADB_USER}
-      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
-
-    command: sleep infinity
-
-    volumes:
-      - mariadb-v:/var/lib/mysql
-    # restart: always
-    expose:  
-          - "3306"  
-    # ports:
-    #   - "3306:3306"
-    networks:
-      - inception
-
 # networks # 将容器加入指定网络 (等同于 docker network connect 的作用) networks将服务连接到不是由Compose管理的、外部创建的网络。
 networks:
   inception: #立自定义的网络
@@ -77,25 +75,4 @@ volumes:
   mariadb-v:
   wordpress-v:
 
-  #  external:  已经存在的网络
-  #     name: my-pre-existing-network
-
-  # # MySQL Service
-  # mysql:
-  #   image: mysql:8
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: {rootpassword}
-  #     MYSQL_DATABASE: {db_name}
-  #     MYSQL_USER: {user}
-  #     MYSQL_PASSWORD: {userpassword}
-  #   volumes:
-  #     - ./.docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-  #     - mysqldata:/var/lib/mysql
-    
   
-
-#该 Compose 文件定义了两个服务：web 和 redis。
-#web：该 web 服务使用从 Dockerfile 当前目录中构建的镜像。然后，它将容器和主机绑定到暴露的端口 5000。此示例服务使用 Flask Web 服务器的默认端口 5000 。
-#redis：该 redis 服务使用 Docker Hub 的公共 Redis 映像。
-#使用 Compose 命令构建和运行您的应用
-  #命令来启动应用程序：docker-compose up 后台执行该服务可以加上 -d 参数：

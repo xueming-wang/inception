@@ -30,16 +30,3 @@ EXPOSE 3306
 
 # CMD /usr/bin/mysqld_safe
 
-
-
-
-
-
-#USER
-#CMD bash ./srcs/init.sh
-#启动容器时执行的Shell命令 启动容器时执行的脚本文件 CMD 在docker run 时运行。RUN 是在 docker build。
-#作用：为启动的容器指定默认要运行的程序，程序运行结束，容器也就结束。CMD 指令指定的程序可被 docker run 命令行参数中指定要运行的程序所覆盖。
-#ENTRYPOINT：类似于 CMD 指令优点：在执行 docker run 的时候可以指定 ENTRYPOINT 运行所需的参数。可以搭配 CMD 命令使用：一般是变参才会使用 CMD 
-#运行 docker build -t runoob/centos:6.7 . docker build 命令来构建一个镜像。 -t ：指定要创建的目标镜像名 . ：Dockerfile 文件所在目录，可以指定Dockerfile 的绝对路径
-#创建容器 docker run -t -i runoob/centos:6.7  /bin/bash
-#docker tag 命令，为镜像添加一个新的标签。docker tag 860c279d2fec !!runoob/centos:dev 镜像源名(repository name):新的标签名(tag)。

@@ -29,7 +29,7 @@ define( 'DB_USER', 'xuwang' );
 define( 'DB_PASSWORD', 'mypassword' );
 
 /** MySQL主机 */
-define( 'DB_HOST', 'mariadb' );
+define( 'DB_HOST', 'mysql:3306' );
 
 /** 创建数据表时默认的文字编码 */
 define( 'DB_CHARSET', 'utf8' );
