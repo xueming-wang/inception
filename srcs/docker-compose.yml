@@ -38,6 +38,8 @@ services:
     volumes:
       - wordpress-v:/var/www/website
     # 定义容器启动顺序
+    extra_hosts:
+      - "xuwang.42.fr:127.0.0.1"
     depends_on: 
       - wordpress
     restart: always
