@@ -10,14 +10,14 @@ services:
    # mariadb  
   mariadb:
     build: ./requirements/mariadb
-    image: mariadb
+    # image: mariadb
     container_name: mariadb
     env_file:  
       - ./.env
       #只要这些变量 优先
     environment:
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_DATABASE=wordpress
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
     command: sleep infinity
@@ -29,8 +29,10 @@ services:
 
   # Nginx Service
   nginx:
+    depends_on: 
+      - wordpress
     build: ./requirements/nginx
-    image: nginx
+    # image: nginx
     container_name: nginx
     command: nginx -g "daemon off;"
     ports:
@@ -38,21 +40,22 @@ services:
     volumes:
       - wordpress-v:/var/www/website
     # 定义容器启动顺序
-    extra_hosts:
-      - "xuwang.42.fr:127.0.0.1"
-    depends_on: 
-      - wordpress
+    # extra_hosts:
+    #   - "xuwang.42.fr:127.0.0.1"
+    
     restart: always
     networks:  # 调用下面 networks 定义的 app_net 网络
       - inception
 
   # wordpress  
   wordpress:
+    depends_on:
+      - mariadb
     build: ./requirements/wordpress
-    image: wordpress
+    image: wordpress:fpm-alpine
     container_name: wordpress
     environment:
-      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
+      - WORDPRESS_DB_HOST=mariadb:3306
       - WORDPRESS_HOST_PSW=${WORDPRESS_HOST_PSW}
       - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
       - WORDPRESS_DB_ASSWORD=${WORDPRESS_DB_ASSWORD}
@@ -60,8 +63,6 @@ services:
     volumes:
       - wordpress-v:/var/www/website
     # command: sleep infinity
-    depends_on:
-      - mariadb
     restart: always
     ports:
       - "9000:9000"

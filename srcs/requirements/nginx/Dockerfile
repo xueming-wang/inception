@@ -9,11 +9,7 @@ WORKDIR /APP
 # 复制当前所有文件包括文件夹到容器里的/APP文件夹里
 COPY ./conf/* .
 
-
 #openssl：Open Secure Sockets Layer
-#wget 是一个从网络上自动下载文件的自由工具
-#openssl TLSv1.2
-
 # Create website folder 
 RUN mkdir -p /var/www/website
 
@@ -23,10 +19,9 @@ RUN apt-get update \
     && apt-get -y install nginx
 
 # Get SSL certification
-# 创建SSL
 RUN mkdir /etc/nginx/ssl \
- && openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout /etc/nginx/ssl/xuwangkey.pem \
-    -out /etc/nginx/ssl/xuwang.pem -subj '/C=FR/ST=69/P=Paris/O=42/CN=tdayde'
+ && openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout /etc/nginx/ssl/xuwangkey.key \
+    -out /etc/nginx/ssl/xuwang.csr -subj '/C=FR/ST=69/P=Paris/O=42/CN=tdayde'
 
 # 配置nginx
 RUN rm -rf /etc/nginx/sites-enabled/default \
@@ -34,9 +29,6 @@ RUN rm -rf /etc/nginx/sites-enabled/default \
     && ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/ \
     && chown -R www-data /var/www/* \
     && chmod -R 755 /var/www/*
-    #ln -s为某一个文件在另外一个位置建立一个同步的链接
-
-    
 
 EXPOSE 443
 #容器启动时要执行的命令
