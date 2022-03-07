@@ -1,4 +1,4 @@
-service mysql start
+#service mysql start
 
 sleep 5
 
