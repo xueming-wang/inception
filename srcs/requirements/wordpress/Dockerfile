@@ -6,12 +6,11 @@ WORKDIR /APP
 
 COPY ./conf/* .
 
-# install wordpress
-# 下载配置wordpress
+
 RUN apt-get update \
     && apt-get install -y wget \
-                            openssl \
-                            vim
+                        openssl \
+                        vim
 
 # Install PHP #
 RUN apt-get install -y php7.3-fpm \
@@ -26,24 +25,21 @@ RUN apt-get install -y php7.3-fpm \
                         php7.3-bcmath \
                         php7.3-zip
 
-# RUN sed 's/listen = \/run\/php\/php7.3-fpm.sock/listen = 0.0.0.0:9000/' -i /etc/php/7.3/fpm/pool.d/www.conf
+RUN  cp ./www.conf /etc/php/7.3/fpm/pool.d/ \
+    && cp ./php.ini /etc/php/7.3/fpm/
 
-RUN rm /etc/php/7.3/fpm/pool.d/www.conf \
-    && cp ./www.conf /etc/php/7.3/fpm/pool.d/
+# install wordpress
 RUN wget https://cn.wordpress.org/latest-zh_CN.tar.gz \
     &&  tar -xzvf latest-zh_CN.tar.gz \
     && mkdir -p /var/www/website/ \
     && mv wordpress /var/www/website/ \
     && cp ./wp-config.php /var/www/website/wordpress/ \
-    && chown -R www-data:www-data /var/www/website/wordpress/
-
-#下载配置phpmadmin 
-#转变文件拥有者 若是整个目次下的都改
-
+    && chown -R www-data:www-data /var/www/website/wordpress/ \
+    && service php7.3-fpm start
 
 
 EXPOSE 9000 
 
-
-# #启动时运行
-CMD sh ./wp_init.sh
+# ENTRYPOINT service php7.3-fpm restart bash
+# #启动时运行 CMD
+ENTRYPOINT ["sh","wp_init.sh"]

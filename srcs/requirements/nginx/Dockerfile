@@ -9,7 +9,6 @@ WORKDIR /APP
 # 复制当前所有文件包括文件夹到容器里的/APP文件夹里
 COPY ./conf/* .
 
-#openssl：Open Secure Sockets Layer
 # Create website folder 
 RUN mkdir -p /var/www/website
 
@@ -33,9 +32,7 @@ RUN rm -rf /etc/nginx/sites-enabled/default \
 EXPOSE 443
 #容器启动时要执行的命令
 
-# CMD ["nginx", "-g", "daemon off;"]
-# ENTRYPOINT  service nginx restart &&\
-#  			bash
+
 CMD ["nginx", "-g", "daemon off;"]
 # CMD sh ./init.sh
 
