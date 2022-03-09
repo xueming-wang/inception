@@ -2,10 +2,10 @@
 
 FROM debian:buster
 
-ARG MARIADB_ROOT
-ARG MARIADB_DATABASE
-ARG MARIADB_USER    
-ARG MARIADB_PASSWORD
+ARG DB_ROOT_PSW
+ARG DB_NAME
+ARG DB_USER
+ARG DB_USER_PWD
 
 
 # 指定接下里的工作路径为/tmp
@@ -29,5 +29,6 @@ EXPOSE 3306
 
 RUN sh ./db_init.sh
 
-CMD exec mysqld_safe
+# CMD exec mysqld_safe
 
+CMD /usr/bin/mysqld_safe

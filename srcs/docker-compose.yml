@@ -9,16 +9,19 @@ version: '3.8'  #Compose File 的版本
 services:  
    # mariadb  
   mariadb:
-    build: ./requirements/mariadb
+    build: 
+      context: ./requirements/mariadb
+      args:
+        - DB_ROOT_PSW=mypassword
+        - DB_NAME=wordpress
+        - DB_USER=xuwang
+        - DB_USER_PWD=mypassword
     container_name: mariadb
+    # ports:
+    #   - 3306:3306
     env_file:  
       - ./.env
       #只要这些变量 优先
-    environment:
-      - MARIADB_ROOT=${MARIADB_ROOT}
-      - MARIADB_DATABASE=${MARIADB_DATABASE}
-      - MARIADB_USER=${MARIADB_USER}
-      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
     command: sleep infinity
     volumes:
       - mariadb-v:/var/lib/mysql
