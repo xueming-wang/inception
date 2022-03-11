@@ -4,14 +4,15 @@ sleep 3
 mysql -e "create database ${DB_NAME};"
 sleep 3
 
-mysql -e "create user ${DB_USER}@'%' identified by '${DB_USER_PWD}';"
+mysql -e "create database ${DB_NAME};"
 sleep 3
 
 mysql -e "grant all privileges on ${DB_NAME}.* to '${DB_USER}'@'%'; flush privileges;"
 sleep 3
 
-mysql -e "alter user  'root'@'localhost' identified by '${DB_ROOT_PSW}'; 
-flush privileges;"
+mysql -e "alter user 'root'@'localhost' identified by '${DB_ROOT_PSW}';flush privileges;"
+
+flush privileges
 
 
 # echo "create database ${MARIADB_DATABASE};" | mysql -u root

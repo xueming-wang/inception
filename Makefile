@@ -6,7 +6,7 @@
 #    By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 15:15:41 by xuwang            #+#    #+#              #
-#    Updated: 2022/03/08 15:45:10 by xuwang           ###   ########.fr        #
+#    Updated: 2022/03/10 14:09:01 by xuwang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,21 @@ NAME=inception
 
 all = $(NAME)
 
-clean:
-		docker-compose down
-		docker stop $(docker ps -a -q)
-		docker rm $(docker ps -a -q)
-		docker rmi $(docker images -q)
+start:
+	docker-compose up -d --build
+
+healtcheck:
+	docker-compose run --rm healtcheck
+
+down:
+	docker-compose down
+
+
+clean: down
+	docker-compose down
+	docker stop $(docker ps -a -q)
+	docker rm $(docker ps -a -q)
+	docker rmi $(docker images -q)
 	
 .PHONY: clean
 #镜像（Image）：Docker 镜像（Image），就相当于是一个 root 文件系统

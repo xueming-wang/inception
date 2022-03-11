@@ -27,10 +27,10 @@ RUN apt-get install -y php7.3-fpm \
 
 RUN  cp ./www.conf /etc/php/7.3/fpm/pool.d/ \
     && cp ./php.ini /etc/php/7.3/fpm/
-
+ 
 # install wordpress
-RUN wget https://cn.wordpress.org/latest-zh_CN.tar.gz \
-    &&  tar -xzvf latest-zh_CN.tar.gz \
+RUN wget https://fr.wordpress.org/wordpress-5.9.1-fr_FR.tar.gz \
+    && tar -xzvf wordpress-5.9.1-fr_FR.tar.gz \
     && mkdir -p /var/www/website/ \
     && mv wordpress /var/www/website/ \
     && cp ./wp-config.php /var/www/website/wordpress/ \
@@ -40,6 +40,9 @@ RUN wget https://cn.wordpress.org/latest-zh_CN.tar.gz \
 
 EXPOSE 9000 
 
+# RUN chmod 447 ./wp_init.sh
+
+# RUN s
 # ENTRYPOINT service php7.3-fpm restart bash
 # #启动时运行 CMD
 ENTRYPOINT ["sh","wp_init.sh"]

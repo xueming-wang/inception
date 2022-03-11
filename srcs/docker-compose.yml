@@ -53,10 +53,10 @@ services:
     build: ./requirements/wordpress
     container_name: wordpress
     environment:
-      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
-      - WORDPRESS_HOST_PSW=${WORDPRESS_HOST_PSW}
-      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
-      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      - WP_DB_HOST=${WP_DB_HOST}
+      - WP_HOST_PSW=${WP_HOST_PSW}
+      - WP_DB_USER=${WP_DB_USER}
+      - WP_USER_PWD=${WP_USER_PWD}
     command: sleep infinity
     volumes:
       - wordpress-v:/var/www/website
