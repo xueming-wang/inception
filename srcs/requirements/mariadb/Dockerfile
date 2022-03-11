@@ -15,19 +15,18 @@ COPY ./conf/* .
 
 
 RUN apt-get update \
-    && apt-get -y install mariadb-client mariadb-server 
+    && apt-get -y install mariadb-server 
+
+# RUN cp ./setup.sql /etc/mysql/setup.sql
+RUN service mysql start && cat ./setup.sql | mysql
+
 RUN sed -i 's/bind-address/bind-address = 0.0.0.0 #/i' /etc/mysql/mariadb.conf.d/50-server.cnf
-
-#RUN service mysql start
-
-RUN chmod 777 ./db_init.sh
-
 # RUN ./db_init.sh
+
 
 # #声明端口。帮助镜像使用者理解这个镜像服务的守护端口，以方便配置映射。 :3306
 EXPOSE 3306
 
-# RUN sh ./db_init.sh
-CMD ["sh","db_init.sh"]
-# CMD /var/lib/mysql/mysqld_safe
 
+
+# CMD /usr/bin/mysqld_safe
