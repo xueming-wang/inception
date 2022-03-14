@@ -21,7 +21,6 @@ RUN apt-get update \
 # RUN cp ./setup.sql /etc/mysql/setup.sql
 # RUN service mysql start && cat ./setup.sql | mysql
 
-
 RUN sed -i 's/bind-address/bind-address = 0.0.0.0 #/i' /etc/mysql/mariadb.conf.d/50-server.cnf
 # RUN ./db_init.sh
 
@@ -29,5 +28,15 @@ RUN sed -i 's/bind-address/bind-address = 0.0.0.0 #/i' /etc/mysql/mariadb.conf.d
 EXPOSE 3306
 
 
-CMD bash script.sh
+# CMD bash script.sh
 # CMD /usr/bin/mysqld_safe
+
+# select user from user;
+
+#  drop user 'wp_user';
+
+# show databases;
+
+# drop database wordpress;
+
+# docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) --force &&docker rmi $(docker images -q)

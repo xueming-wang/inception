@@ -22,7 +22,7 @@ services:
     #   - 3306:3306
     env_file:  
       - ./.env
-    # command: bash script.sh
+    command: bash script.sh
     volumes:
       - mariadb-v:/var/lib/mysql
     restart: always
