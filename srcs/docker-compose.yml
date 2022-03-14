@@ -12,17 +12,17 @@ services:
     build: 
       context: ./requirements/mariadb
       args:
-        - DB_ROOT_PSW=mypassword
-        - DB_NAME=wordpress
-        - DB_USER=xuwang
-        - DB_USER_PWD=mypassword
+        - DB_HOST=${DB_HOST}
+        - DB_HOST_PSW=${DB_HOST_PSW}
+        - DB_NAME=${DB_NAME}
+        - DB_USER=${DB_USER}
+        - DB_USER_PWD=${DB_USER_PWD}
     container_name: mariadb
     # ports:
     #   - 3306:3306
     env_file:  
       - ./.env
-      #只要这些变量 优先
-    command: sleep infinity
+    # command: bash script.sh
     volumes:
       - mariadb-v:/var/lib/mysql
     restart: always
