@@ -6,7 +6,7 @@
 #    By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 15:15:41 by xuwang            #+#    #+#              #
-#    Updated: 2022/03/14 19:47:24 by xuwang           ###   ########.fr        #
+#    Updated: 2022/03/15 17:56:47 by xuwang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,19 +17,35 @@ all = $(NAME)
 start:
 	docker-compose -f ./srcs/docker-compose.yml up -d --build
 
-healtcheck:
-	docker-compose -f ./srcs/docker-compose.yml run --rm healtcheck
-
 down:
 	docker-compose -f ./srcs/docker-compose.yml down
 	
-
-clean: down
-	-docker rm -f $$(docker ps -a -q) 
-	-docker rmi -f $$(docker images -aq)
-	-docker volume rm $$(docker volume ls -q)
+stop:
+	docker-compose -f ./srcs/docker-compose.yml stop
 	
-.PHONY: start healtcheck down clean
+mysql:
+	-docker exec -it mysql bash
+
+wp:
+	-docker exec -it wordpress bash
+
+nginx:
+	-docker exec -it nginx bash
+			
+clear: 
+	-docker-compose -f ./srcs/docker-compose.yml down
+	-docker rm -f $$(docker ps -a -q)
+	-docker volume rm $$(docker volume ls -q)
+	-docker rmi -f $$(docker images -aq)
+
+clean: clear
+
+fclean: clear
+
+re: fclean all
+
+.PHONY: start down clean mysql wp nginx clear
+
 #镜像（Image）：Docker 镜像（Image），就相当于是一个 root 文件系统
 #Dockerfile是一个用来构建镜像的文本文件 读取Dockerfile中的指令自动生成映像。
 #容器（Container）：镜像（Image）和容器（Container）的关系，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。 容器通过镜像来创建
