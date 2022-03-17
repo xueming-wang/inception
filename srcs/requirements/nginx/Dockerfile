@@ -1,7 +1,7 @@
 #NGINX avec TLSv1.2 ou TLSv1.3 uniquement.
 
 #指定使用哪个镜像源   Le container devra tourner avec Debian Buster.
-FROM debian:buster  
+FROM debian:buster 
 
 # 指定接下里的工作路径为/APP
 WORKDIR /APP

@@ -18,25 +18,11 @@ COPY ./conf/* .
 RUN apt-get update \
     && apt-get -y install mariadb-server 
 
-# RUN cp ./setup.sql /etc/mysql/setup.sql
-# RUN service mysql start && cat ./setup.sql | mysql
+
 
 RUN sed -i 's/bind-address/bind-address = 0.0.0.0 #/i' /etc/mysql/mariadb.conf.d/50-server.cnf
-# RUN ./db_init.sh
 
 # #声明端口。帮助镜像使用者理解这个镜像服务的守护端口，以方便配置映射。 :3306
 EXPOSE 3306
 
 
-# CMD bash script.sh
-# CMD /usr/bin/mysqld_safe
-
-# select user from user;
-
-#  drop user 'wp_user';
-
-# show databases;
-
-# drop database wordpress;
-
-# docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) --force &&docker rmi $(docker images -q)
