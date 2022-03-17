@@ -16,8 +16,7 @@ COPY ./conf/* .
 
 
 RUN apt-get update \
-    && apt-get -y install mariadb-server 
-
+    && apt-get -y install mariadb-server
 
 
 RUN sed -i 's/bind-address/bind-address = 0.0.0.0 #/i' /etc/mysql/mariadb.conf.d/50-server.cnf
