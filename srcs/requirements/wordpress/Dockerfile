@@ -1,5 +1,4 @@
 #Un container Docker contenant WordPress + php-fpm (installé et configuré) uni- quement sans nginx.
-#两位用户将出现在您的 WordPress 数据库中
 FROM debian:buster
 
 WORKDIR /APP
@@ -36,8 +35,6 @@ RUN wget https://fr.wordpress.org/wordpress-5.9.2-fr_FR.tar.gz \
     && chown -R www-data:www-data /var/www/website/wordpress/ \
     && service php7.3-fpm start
 
-
 EXPOSE 9000 
 
-# #启动时运行 CMD
 ENTRYPOINT ["sh","wp_init.sh"]

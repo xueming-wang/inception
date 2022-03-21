@@ -1,12 +1,10 @@
 #NGINX avec TLSv1.2 ou TLSv1.3 uniquement.
 
-#指定使用哪个镜像源   Le container devra tourner avec Debian Buster.
+#Le container devra tourner avec Debian Buster.
 FROM debian:buster 
 
-# 指定接下里的工作路径为/APP
 WORKDIR /APP
 
-# 复制当前所有文件包括文件夹到容器里的/APP文件夹里
 COPY ./conf/* /APP/
 
 # Create website folder 
@@ -30,10 +28,7 @@ RUN rm -rf /etc/nginx/sites-enabled/default \
     && chmod -R 755 /var/www/*
 
 EXPOSE 443
-#容器启动时要执行的命令
-
 
 CMD ["nginx", "-g", "daemon off;"]
-# CMD sh ./init.sh
 
 

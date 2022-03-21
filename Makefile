@@ -12,7 +12,7 @@
 
 
 all:
-	# sudo mkdir -p /home/xuwang/data/wordpress-v /home/xuwang/data/mariadb-v
+	sudo mkdir -p /home/xuwang/data/wordpress-v /home/xuwang/data/mariadb-v
 	docker-compose -f ./srcs/docker-compose.yml up -d --build
 
 down:

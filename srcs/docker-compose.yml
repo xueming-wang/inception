@@ -1,22 +1,10 @@
-# Defining and running multi-container Docker applications
-#指定本 yml 依从的 compose 哪个版本制定的。
-#Compose会为我们的应用创建一个网络，服务的每个容器都会加入该网络中
-#容器就可被该网络中的其他容器访问，不仅如此，该容器还能以服务名称作为hostname被其他容器访问。
-#创建一个名为myapp_default的网络；它以“web”这个名称加入网络myapp_default；
-version: '3'  #Compose File 的版本
+# Defining and running multi-container Docker application
+version: '3'
 
-#services 區塊就是我們想要建立、啟動的服務
 services:  
    # mariadb  
   mariadb:
-    build: 
-      context: ./requirements/mariadb
-      args:
-        - DB_HOST=${DB_HOST}
-        - DB_HOST_PSW=${DB_HOST_PSW}
-        - DB_NAME=${DB_NAME}
-        - DB_USER=${DB_USER}
-        - DB_USER_PWD=${DB_USER_PWD}
+    build: ./requirements/mariadb
     container_name: mariadb
     env_file:  
       - ./.env
@@ -35,13 +23,13 @@ services:
     container_name: nginx
     command: nginx -g "daemon off;"
     ports:
-      - 443:443  #后面是网络 前面是本地
+      - 443:443 
     links:
       - wordpress
     volumes:
       - wordpress-v:/var/www/website 
     restart: always
-    networks:  # 调用下面 networks 定义的 app_net 网络
+    networks: 
       - inception
 
   # wordpress  
@@ -55,28 +43,27 @@ services:
       - wordpress-v:/var/www/website
     links:
       - mariadb
-    # command: sleep infinity
     restart: always
     networks:
       - inception
   
-# networks # 将容器加入指定网络 (等同于 docker network connect 的作用) networks将服务连接到不是由Compose管理的、外部创建的网络。
+
 networks:
-  inception: #立自定义的网络
-    driver: bridge    # Docker 默认使用 bridge 连接单个主机上的网络
+  inception:
+    driver: bridge    
 
 volumes:
   mariadb-v:
-    # driver: local
-    # driver_opts:
-    #   type: 'none'
-    #   o: 'bind'
-    #   device: /home/xuwang/data/mariadb-v
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /home/xuwang/data/mariadb-v
   wordpress-v:
-    #  driver: local
-    # driver_opts:
-    #   type: 'none'
-    #   o: 'bind'
-    #   device: /home/xuwang/data/wordpress-v
+     driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /home/xuwang/data/wordpress-v
 
   
