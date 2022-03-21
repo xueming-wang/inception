@@ -4,7 +4,7 @@ FROM debian:buster
 
 WORKDIR /APP
 
-COPY ./conf/* .
+COPY ./conf/* /APP/
 
 
 RUN apt-get update \

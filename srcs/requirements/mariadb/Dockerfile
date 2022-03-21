@@ -12,7 +12,7 @@ ARG DB_HOST
 # 指定接下里的工作路径为/tmp
 WORKDIR /APP
 
-COPY ./conf/* .
+COPY ./conf/* /APP/
 
 
 RUN apt-get update \

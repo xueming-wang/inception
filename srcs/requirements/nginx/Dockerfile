@@ -7,7 +7,7 @@ FROM debian:buster
 WORKDIR /APP
 
 # 复制当前所有文件包括文件夹到容器里的/APP文件夹里
-COPY ./conf/* .
+COPY ./conf/* /APP/
 
 # Create website folder 
 RUN mkdir -p /var/www/website
