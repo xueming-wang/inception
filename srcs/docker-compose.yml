@@ -3,7 +3,7 @@
 #Compose会为我们的应用创建一个网络，服务的每个容器都会加入该网络中
 #容器就可被该网络中的其他容器访问，不仅如此，该容器还能以服务名称作为hostname被其他容器访问。
 #创建一个名为myapp_default的网络；它以“web”这个名称加入网络myapp_default；
-version: '3.8'  #Compose File 的版本
+version: '3'  #Compose File 的版本
 
 #services 區塊就是我們想要建立、啟動的服務
 services:  
@@ -18,8 +18,6 @@ services:
         - DB_USER=${DB_USER}
         - DB_USER_PWD=${DB_USER_PWD}
     container_name: mariadb
-    # ports:
-    #   - 3306:3306
     env_file:  
       - ./.env
     command: bash script.sh
@@ -52,11 +50,6 @@ services:
       - mariadb
     build: ./requirements/wordpress
     container_name: wordpress
-    environment:
-      - WP_DB_HOST=${WP_DB_HOST}
-      - WP_HOST_PSW=${WP_HOST_PSW}
-      - WP_DB_USER=${WP_DB_USER}
-      - WP_USER_PWD=${WP_USER_PWD}
     command: sleep infinity
     volumes:
       - wordpress-v:/var/www/website
@@ -64,8 +57,6 @@ services:
       - mariadb
     # command: sleep infinity
     restart: always
-    ports:
-      - "9000:9000"
     networks:
       - inception
   
@@ -76,6 +67,16 @@ networks:
 
 volumes:
   mariadb-v:
+    # driver: local
+    # driver_opts:
+    #   type: 'none'
+    #   o: 'bind'
+    #   device: /home/xuwang/data/mariadb-v
   wordpress-v:
+    #  driver: local
+    # driver_opts:
+    #   type: 'none'
+    #   o: 'bind'
+    #   device: /home/xuwang/data/wordpress-v
 
   
