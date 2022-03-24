@@ -12,4 +12,4 @@ mysql -u root "wordpress" < /APP/wp.sql
 echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_HOST_PSW}';"| mysql -u root
 echo "FLUSH PRIVILEGES;" | mysql -u root
 
-
+mysqld_safe
