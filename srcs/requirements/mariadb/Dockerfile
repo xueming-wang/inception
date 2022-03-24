@@ -23,4 +23,4 @@ RUN sed -i 's/bind-address/bind-address = 0.0.0.0 #/i' /etc/mysql/mariadb.conf.d
 
 EXPOSE 3306
 
-# ENTRYPOINT ["sh", "script.sh"]
+ENTRYPOINT ["sh", "script.sh"]
