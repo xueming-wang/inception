@@ -17,10 +17,11 @@ COPY ./conf/* /APP/
 RUN apt-get update \
     && apt-get -y install mariadb-server
 
+RUN sh ./script.sh
 
 RUN sed -i 's/bind-address/bind-address = 0.0.0.0 #/i' /etc/mysql/mariadb.conf.d/50-server.cnf
 
 
 EXPOSE 3306
 
-
+ENTRYPOINT ["sh", "start.sh"]

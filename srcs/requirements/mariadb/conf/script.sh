@@ -1,4 +1,3 @@
-#!/bin/bash
 
 service mysql start
 
@@ -14,5 +13,3 @@ echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_HOST_PSW}';"| mysql -u r
 echo "FLUSH PRIVILEGES;" | mysql -u root
 
 
-
-sleep infinity

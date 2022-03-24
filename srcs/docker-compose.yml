@@ -8,7 +8,6 @@ services:
     container_name: mariadb
     env_file:  
       - ./.env
-    command: bash script.sh
     volumes:
       - mariadb-v:/var/lib/mysql
     restart: always
