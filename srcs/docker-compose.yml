@@ -37,7 +37,6 @@ services:
       - mariadb
     build: ./requirements/wordpress
     container_name: wordpress
-    command: sleep infinity
     volumes:
       - wordpress-v:/var/www/website
     links:
