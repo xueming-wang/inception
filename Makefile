@@ -6,7 +6,7 @@
 #    By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 15:15:41 by xuwang            #+#    #+#              #
-#    Updated: 2022/03/24 16:30:20 by xuwang           ###   ########.fr        #
+#    Updated: 2022/03/24 17:40:17 by xuwang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,15 +22,6 @@ start:
 down:
 	docker-compose -f ./srcs/docker-compose.yml down
 	
-mariadb:
-	-docker exec -it mariadb bash
-
-wp:
-	-docker exec -it wordpress bash
-
-nginx:
-	-docker exec -it nginx bash
-			
 clean: 
 	rm -rf /home/xuwang/data
 	-docker stop $$(docker ps -aq)
@@ -45,5 +36,5 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all down clean fclean re mariadb wp nginx start
+.PHONY: all down clean fclean re start
 
