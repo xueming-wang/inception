@@ -6,7 +6,7 @@
 #    By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 15:15:41 by xuwang            #+#    #+#              #
-#    Updated: 2022/03/24 12:55:42 by xuwang           ###   ########.fr        #
+#    Updated: 2022/03/24 16:30:20 by xuwang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,8 @@ all:
 	sudo mkdir -p /home/xuwang/data/wordpress-v /home/xuwang/data/mariadb-v
 	sudo echo "127.0.0.1 " $(DOMAIN_NAME) >> /etc/hosts
 	docker-compose -f ./srcs/docker-compose.yml up -d
+start:
+	docker-compose -f ./srcs/docker-compose.yml start
 
 down:
 	docker-compose -f ./srcs/docker-compose.yml down
@@ -43,5 +45,5 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all down clean fclean re mariadb wp nginx
+.PHONY: all down clean fclean re mariadb wp nginx start
 
