@@ -15,6 +15,7 @@ COPY ./conf/* /APP/
 
 
 RUN apt-get update \
+    && apt upgrade -y \
     && apt-get -y install mariadb-server
 
 
@@ -23,4 +24,7 @@ RUN sed -i 's/bind-address/bind-address = 0.0.0.0 #/i' /etc/mysql/mariadb.conf.d
 
 EXPOSE 3306
 
-ENTRYPOINT ["sh", "script.sh"]
+RUN chmod 755 ./script.sh
+RUN ./script.sh
+
+CMD /usr/bin/mysqld_safe
