@@ -13,9 +13,9 @@
 include ./srcs/.env
 
 all:
-	# sudo mkdir -p /home/xuwang/data/wordpress-v /home/xuwang/data/mariadb-v
-	# sudo echo "127.0.0.1 " $(DOMAIN_NAME) >> /etc/hosts
-	docker-compose -f ./srcs/docker-compose.yml up --build
+	mkdir -p /home/xuwang/data/wordpress-v /home/xuwang/data/mariadb-v
+	echo "127.0.0.1 " $(DOMAIN_NAME) >> /etc/hosts
+	docker-compose -f ./srcs/docker-compose.yml up -d --build
 	
 start:
 	docker-compose -f ./srcs/docker-compose.yml start

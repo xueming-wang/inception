@@ -59,16 +59,16 @@ networks:
 
 volumes:
   mariadb-v:
-    # driver: local
-    # driver_opts:
-    #   type: 'none'
-    #   o: 'bind'
-    #   device: /home/xuwang/data/mariadb-v
+    driver: local
+    driver_opts:
+       type: 'none'
+       o: 'bind'
+       device: /home/xuwang/data/mariadb-v
   wordpress-v:
-    # driver: local
-    # driver_opts:
-    #   type: 'none'
-    #   o: 'bind'
-    #   device: /home/xuwang/data/wordpress-v
+    driver: local
+    driver_opts:
+       type: 'none'
+       o: 'bind'
+       device: /home/xuwang/data/wordpress-v
 
   
