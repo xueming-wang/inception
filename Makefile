@@ -6,15 +6,15 @@
 #    By: xuwang <xuwang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/02/21 15:15:41 by xuwang            #+#    #+#              #
-#    Updated: 2022/03/31 18:25:46 by xuwang           ###   ########.fr        #
+#    Updated: 2022/04/01 13:06:36 by xuwang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 include ./srcs/.env
 
 all:
-	sudo mkdir -p /home/xuwang/data/wordpress-v /home/xuwang/data/mariadb-v
-	sudo echo "127.0.0.1 " $(DOMAIN_NAME) >> /etc/hosts
+	# sudo mkdir -p /home/xuwang/data/wordpress-v /home/xuwang/data/mariadb-v
+	# sudo echo "127.0.0.1 " $(DOMAIN_NAME) >> /etc/hosts
 	docker-compose -f ./srcs/docker-compose.yml up --build
 	
 start:

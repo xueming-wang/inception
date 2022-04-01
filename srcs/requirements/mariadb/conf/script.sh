@@ -8,5 +8,5 @@ echo "FLUSH PRIVILEGES;" | mysql -u root
 
 mysql -u root "wordpress" < /APP/wp.sql
 
-echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_HOST_PSW}'; FLUSH PRIVILEGES;"| mysql -u root
+echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_HOST_PWD}'; FLUSH PRIVILEGES;"| mysql -u root
 

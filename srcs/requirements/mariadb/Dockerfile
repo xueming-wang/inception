@@ -2,7 +2,7 @@
 
 FROM debian:buster
 
-ARG DB_HOST_PSW
+ARG DB_HOST_PWD
 ARG DB_NAME
 ARG DB_USER
 ARG DB_USER_PWD
@@ -27,4 +27,4 @@ EXPOSE 3306
 RUN chmod 755 ./script.sh
 RUN ./script.sh
 
-CMD /usr/bin/mysqld_safe
+CMD mysqld
