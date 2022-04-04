@@ -13,6 +13,7 @@ services:
         - DB_USER=wp_user
         - DB_USER_PWD=userpassword
         - DB_HOST=mariadb
+    image: mariadb:v_1
     env_file:  
       - ./.env
     volumes:
@@ -27,6 +28,7 @@ services:
     depends_on: 
       - wordpress
     build: ./requirements/nginx
+    image: nginx:v_1
     command: nginx -g "daemon off;"
     ports:
       - 443:443 
@@ -44,6 +46,7 @@ services:
     depends_on:
       - mariadb
     build: ./requirements/wordpress
+    image: wordpress:v_1
     volumes:
       - wordpress-v:/var/www/website
     links:
